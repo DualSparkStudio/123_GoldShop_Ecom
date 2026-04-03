@@ -1,11 +1,13 @@
 import { motion } from 'framer-motion'
-import { Package, Clock, CheckCircle, XCircle, Truck, Eye } from 'lucide-react'
+import { Package, Clock, CheckCircle, XCircle, Truck, ShoppingBag, Home } from 'lucide-react'
 import { useOrder } from '../context/OrderContext'
+import { useNavigate } from 'react-router-dom'
 import { format } from 'date-fns'
 import { useState } from 'react'
 
 const Orders = () => {
-  const { orders, cancelOrder } = useOrder()
+  const { orders } = useOrder()
+  const navigate = useNavigate()
   const [selectedOrder, setSelectedOrder] = useState(null)
 
   const getStatusColor = (status) => {
@@ -42,23 +44,34 @@ const Orders = () => {
     }
   }
 
-  const handleCancelOrder = (orderId) => {
-    if (window.confirm('Are you sure you want to cancel this order?')) {
-      cancelOrder(orderId)
-      alert('Order cancelled successfully!')
-    }
-  }
-
   return (
     <div className="min-h-screen bg-slate-50 py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
+          className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
         >
-          <h1 className="text-4xl font-serif font-bold luxury-text mb-2">My Orders</h1>
-          <p className="text-slate-600">Track and manage your orders</p>
+          <div>
+            <h1 className="text-4xl font-serif font-bold luxury-text mb-2">My Orders</h1>
+            <p className="text-slate-600">Track and manage your orders</p>
+          </div>
+          <div className="flex flex-wrap gap-3">
+            <button
+              onClick={() => navigate('/')}
+              className="flex items-center space-x-2 px-6 py-3 bg-white border-2 border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors font-semibold"
+            >
+              <Home className="w-5 h-5" />
+              <span>Back to Home</span>
+            </button>
+            <button
+              onClick={() => navigate('/shop')}
+              className="flex items-center space-x-2 px-6 py-3 bg-gold-600 text-white rounded-lg hover:bg-gold-700 transition-colors font-semibold"
+            >
+              <ShoppingBag className="w-5 h-5" />
+              <span>Continue Shopping</span>
+            </button>
+          </div>
         </motion.div>
 
         {orders.length === 0 ? (
@@ -66,9 +79,22 @@ const Orders = () => {
             <Package className="w-20 h-20 text-slate-300 mx-auto mb-4" />
             <h2 className="text-2xl font-bold text-slate-800 mb-2">No Orders Yet</h2>
             <p className="text-slate-600 mb-6">Start shopping to place your first order</p>
-            <a href="/shop" className="btn-primary inline-block">
-              Browse Products
-            </a>
+            <div className="flex flex-wrap justify-center gap-3">
+              <button
+                onClick={() => navigate('/')}
+                className="flex items-center space-x-2 px-6 py-3 bg-white border-2 border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors font-semibold"
+              >
+                <Home className="w-5 h-5" />
+                <span>Back to Home</span>
+              </button>
+              <button
+                onClick={() => navigate('/shop')}
+                className="flex items-center space-x-2 px-6 py-3 bg-gold-600 text-white rounded-lg hover:bg-gold-700 transition-colors font-semibold"
+              >
+                <ShoppingBag className="w-5 h-5" />
+                <span>Browse Products</span>
+              </button>
+            </div>
           </div>
         ) : (
           <div className="space-y-6">
@@ -159,23 +185,11 @@ const Orders = () => {
                     </div>
                     {order.paymentInfo && (
                       <p className="text-slate-600 text-sm mt-3">
-                        Paid with card ending in {order.paymentInfo.cardLast4}
+                        Payment ID: {order.paymentInfo.paymentId}
                       </p>
                     )}
                   </div>
                 </div>
-
-                {/* Actions */}
-                {order.status === 'pending' && (
-                  <div className="mt-6 flex justify-end">
-                    <button
-                      onClick={() => handleCancelOrder(order.id)}
-                      className="px-6 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold transition-colors"
-                    >
-                      Cancel Order
-                    </button>
-                  </div>
-                )}
               </motion.div>
             ))}
           </div>

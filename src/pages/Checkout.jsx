@@ -23,6 +23,7 @@ const Checkout = () => {
 
   const [errors, setErrors] = useState({})
   const [isProcessing, setIsProcessing] = useState(false)
+  const [testMode, setTestMode] = useState(true) // Enable test mode by default
 
   // Load Razorpay script
   useEffect(() => {
@@ -71,7 +72,7 @@ const Checkout = () => {
     const amountInPaise = Math.round(grandTotal * 100)
 
     const options = {
-      key: 'rzp_test_YOUR_KEY_ID', // Replace with your Razorpay Key ID
+      key: 'rzp_test_YOUR_KEY_ID', // ⚠️ IMPORTANT: Replace with your actual Razorpay Key ID from https://dashboard.razorpay.com/app/keys
       amount: amountInPaise,
       currency: 'INR',
       name: 'Luxe Gold & Silver Shop',
@@ -120,19 +121,35 @@ const Checkout = () => {
       modal: {
         ondismiss: function() {
           setIsProcessing(false)
-          alert('Payment cancelled')
-        }
+          alert('Payment cancelled. You can try again when ready.')
+        },
+        escape: true,
+        backdropclose: false,
       }
     }
 
-    const razorpay = new window.Razorpay(options)
-    razorpay.open()
+    try {
+      const razorpay = new window.Razorpay(options)
+      
+      razorpay.on('payment.failed', function (response) {
+        setIsProcessing(false)
+        console.error('Payment failed:', response.error)
+        alert(`Payment failed: ${response.error.description || 'Please try again'}`)
+      })
+      
+      razorpay.open()
+    } catch (error) {
+      setIsProcessing(false)
+      console.error('Razorpay error:', error)
+      alert('Unable to open payment gateway. Please check your internet connection and try again.')
+    }
   }
 
   const handleSubmit = (e) => {
     e.preventDefault()
     
     if (!validate()) {
+      alert('Please fill in all required fields correctly.')
       return
     }
 
@@ -143,13 +160,64 @@ const Checkout = () => {
 
     setIsProcessing(true)
     
+    // Test mode - simulate payment without Razorpay
+    if (testMode) {
+      handleTestPayment()
+      return
+    }
+    
+    // Check if Razorpay script is loaded
+    if (!window.Razorpay) {
+      alert('Payment gateway is loading. Please wait a moment and try again.')
+      setIsProcessing(false)
+      return
+    }
+    
     // Open Razorpay payment gateway
-    if (window.Razorpay) {
+    try {
       handleRazorpayPayment()
-    } else {
-      alert('Payment gateway not loaded. Please refresh and try again.')
+    } catch (error) {
+      console.error('Payment error:', error)
+      alert('Failed to initialize payment. Please refresh the page and try again.')
       setIsProcessing(false)
     }
+  }
+
+  const handleTestPayment = () => {
+    // Simulate payment processing
+    setTimeout(() => {
+      const total = getCartTotal()
+      const shipping = total > 5000 ? 0 : 50
+      const tax = total * 0.1
+      const grandTotal = total + shipping + tax
+      
+      const orderData = {
+        items: cart,
+        total: grandTotal,
+        customerInfo: {
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          address: formData.address,
+          city: formData.city,
+          state: formData.state,
+          zipCode: formData.zipCode,
+        },
+        paymentInfo: {
+          paymentId: 'TEST_' + Date.now(),
+          method: 'Test Payment',
+          status: 'Paid',
+        },
+        notes: formData.notes,
+      }
+
+      const order = createOrder(orderData)
+      clearCart()
+      setIsProcessing(false)
+      
+      alert(`✅ Test Payment Successful!\n\nOrder Number: ${order.orderNumber}\n\nThis is a simulated payment. Enable real Razorpay payments by:\n1. Getting your key from https://dashboard.razorpay.com/app/keys\n2. Replacing the key in Checkout.jsx\n3. Setting testMode to false`)
+      navigate('/orders')
+    }, 1500)
   }
 
   const total = getCartTotal()
@@ -180,6 +248,33 @@ const Checkout = () => {
   return (
     <div className="min-h-screen bg-slate-50 py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Razorpay Key Warning */}
+        <div className="mb-6 bg-blue-50 border-2 border-blue-300 rounded-xl p-4">
+          <div className="flex items-start space-x-3">
+            <div className="flex-shrink-0">
+              <svg className="w-6 h-6 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+              </svg>
+            </div>
+            <div className="flex-1">
+              <h3 className="text-sm font-bold text-blue-900 mb-1">
+                {testMode ? '🧪 Test Mode Active' : '⚠️ Razorpay Configuration Required'}
+              </h3>
+              {testMode ? (
+                <p className="text-sm text-blue-800">
+                  Payments are currently in test mode. Orders will be created without real payment processing. 
+                  To enable real payments, set <code className="bg-blue-100 px-2 py-0.5 rounded font-mono text-xs">testMode = false</code> and add your Razorpay Key ID in <code className="bg-blue-100 px-2 py-0.5 rounded font-mono text-xs">src/pages/Checkout.jsx</code>.
+                </p>
+              ) : (
+                <p className="text-sm text-blue-800">
+                  Replace <code className="bg-blue-100 px-2 py-0.5 rounded font-mono text-xs">rzp_test_YOUR_KEY_ID</code> with your actual Razorpay Key ID in <code className="bg-blue-100 px-2 py-0.5 rounded font-mono text-xs">src/pages/Checkout.jsx</code> (line 60).
+                  Get your key from <a href="https://dashboard.razorpay.com/app/keys" target="_blank" rel="noopener noreferrer" className="underline font-semibold hover:text-blue-600">Razorpay Dashboard</a>.
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -376,7 +471,12 @@ const Checkout = () => {
               >
                 <Lock className="w-5 h-5" />
                 <span>
-                  {isProcessing ? 'Processing...' : `Proceed to Payment - ₹${grandTotal.toLocaleString()}`}
+                  {isProcessing 
+                    ? 'Processing...' 
+                    : testMode 
+                      ? `Test Payment - ₹${grandTotal.toLocaleString()}`
+                      : `Proceed to Payment - ₹${grandTotal.toLocaleString()}`
+                  }
                 </span>
               </button>
               
@@ -404,7 +504,7 @@ const Checkout = () => {
                       <p className="text-slate-600 text-sm">Qty: {item.quantity}</p>
                     </div>
                     <p className="font-bold text-gold-600">
-                      ${(item.price * item.quantity).toLocaleString()}
+                      ₹{(item.price * item.quantity).toLocaleString()}
                     </p>
                   </div>
                 ))}
@@ -425,14 +525,14 @@ const Checkout = () => {
                 </div>
                 <div className="border-t border-slate-200 pt-3 flex justify-between text-xl font-bold text-slate-800">
                   <span>Total</span>
-                  <span className="text-gold-600">${grandTotal.toLocaleString()}</span>
+                  <span className="text-gold-600">₹{grandTotal.toLocaleString()}</span>
                 </div>
               </div>
 
               {total < 5000 && (
                 <div className="mt-4 p-3 bg-blue-50 rounded-lg">
                   <p className="text-sm text-blue-700">
-                    Add ${(5000 - total).toLocaleString()} more for FREE shipping!
+                    Add ₹{(5000 - total).toLocaleString()} more for FREE shipping!
                   </p>
                 </div>
               )}
