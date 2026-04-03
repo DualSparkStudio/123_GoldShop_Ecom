@@ -3,6 +3,7 @@ import { CartProvider } from './context/CartContext'
 import { AuthProvider, useAuth } from './context/AuthContext'
 import { ProductProvider } from './context/ProductContext'
 import { OrderProvider } from './context/OrderContext'
+import { MaintenanceProvider, useMaintenanceMode } from './context/MaintenanceContext'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Home from './pages/Home'
@@ -15,6 +16,7 @@ import Checkout from './pages/Checkout'
 import Orders from './pages/Orders'
 import About from './pages/About'
 import Contact from './pages/Contact'
+import Maintenance from './pages/Maintenance'
 
 // Admin imports
 import AdminLogin from './pages/admin/Login'
@@ -22,6 +24,8 @@ import AdminLayout from './components/admin/AdminLayout'
 import Dashboard from './pages/admin/Dashboard'
 import AdminProducts from './pages/admin/Products'
 import AdminOrders from './pages/admin/AdminOrders'
+import MaintenanceSettings from './pages/admin/MaintenanceSettings'
+import Profile from './pages/admin/Profile'
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -29,104 +33,138 @@ const ProtectedRoute = ({ children }) => {
   return isAuthenticated ? children : <Navigate to="/admin/login" replace />
 }
 
+// Public Route with Maintenance Check
+const PublicRoute = ({ children }) => {
+  const { isMaintenanceMode } = useMaintenanceMode()
+  const { isAuthenticated } = useAuth()
+  
+  // Allow admin users to bypass maintenance mode
+  if (isMaintenanceMode && !isAuthenticated) {
+    return <Maintenance />
+  }
+  
+  return children
+}
+
 function App() {
   return (
     <Router>
       <AuthProvider>
-        <ProductProvider>
-          <CartProvider>
-            <OrderProvider>
-            <Routes>
-              {/* Public Routes */}
-              <Route path="/" element={
-                <div className="min-h-screen flex flex-col">
-                  <Navbar />
-                  <main className="flex-grow">
-                    <Home />
-                  </main>
-                  <Footer />
-                </div>
-              } />
+        <MaintenanceProvider>
+          <ProductProvider>
+            <CartProvider>
+              <OrderProvider>
+              <Routes>
+                {/* Public Routes */}
+                <Route path="/" element={
+                  <PublicRoute>
+                    <div className="min-h-screen flex flex-col">
+                      <Navbar />
+                      <main className="flex-grow">
+                        <Home />
+                      </main>
+                      <Footer />
+                    </div>
+                  </PublicRoute>
+                } />
               <Route path="/shop" element={
-                <div className="min-h-screen flex flex-col">
-                  <Navbar />
-                  <main className="flex-grow">
-                    <Shop />
-                  </main>
-                  <Footer />
-                </div>
+                <PublicRoute>
+                  <div className="min-h-screen flex flex-col">
+                    <Navbar />
+                    <main className="flex-grow">
+                      <Shop />
+                    </main>
+                    <Footer />
+                  </div>
+                </PublicRoute>
               } />
               <Route path="/products" element={
-                <div className="min-h-screen flex flex-col">
-                  <Navbar />
-                  <main className="flex-grow">
-                    <Products />
-                  </main>
-                  <Footer />
-                </div>
+                <PublicRoute>
+                  <div className="min-h-screen flex flex-col">
+                    <Navbar />
+                    <main className="flex-grow">
+                      <Products />
+                    </main>
+                    <Footer />
+                  </div>
+                </PublicRoute>
               } />
               <Route path="/gallery" element={
-                <div className="min-h-screen flex flex-col">
-                  <Navbar />
-                  <main className="flex-grow">
-                    <Gallery />
-                  </main>
-                  <Footer />
-                </div>
+                <PublicRoute>
+                  <div className="min-h-screen flex flex-col">
+                    <Navbar />
+                    <main className="flex-grow">
+                      <Gallery />
+                    </main>
+                    <Footer />
+                  </div>
+                </PublicRoute>
               } />
               <Route path="/product/:id" element={
-                <div className="min-h-screen flex flex-col">
-                  <Navbar />
-                  <main className="flex-grow">
-                    <ProductDetail />
-                  </main>
-                  <Footer />
-                </div>
+                <PublicRoute>
+                  <div className="min-h-screen flex flex-col">
+                    <Navbar />
+                    <main className="flex-grow">
+                      <ProductDetail />
+                    </main>
+                    <Footer />
+                  </div>
+                </PublicRoute>
               } />
               <Route path="/cart" element={
-                <div className="min-h-screen flex flex-col">
-                  <Navbar />
-                  <main className="flex-grow">
-                    <Cart />
-                  </main>
-                  <Footer />
-                </div>
+                <PublicRoute>
+                  <div className="min-h-screen flex flex-col">
+                    <Navbar />
+                    <main className="flex-grow">
+                      <Cart />
+                    </main>
+                    <Footer />
+                  </div>
+                </PublicRoute>
               } />
               <Route path="/checkout" element={
-                <div className="min-h-screen flex flex-col">
-                  <Navbar />
-                  <main className="flex-grow">
-                    <Checkout />
-                  </main>
-                  <Footer />
-                </div>
+                <PublicRoute>
+                  <div className="min-h-screen flex flex-col">
+                    <Navbar />
+                    <main className="flex-grow">
+                      <Checkout />
+                    </main>
+                    <Footer />
+                  </div>
+                </PublicRoute>
               } />
               <Route path="/orders" element={
-                <div className="min-h-screen flex flex-col">
-                  <Navbar />
-                  <main className="flex-grow">
-                    <Orders />
-                  </main>
-                  <Footer />
-                </div>
+                <PublicRoute>
+                  <div className="min-h-screen flex flex-col">
+                    <Navbar />
+                    <main className="flex-grow">
+                      <Orders />
+                    </main>
+                    <Footer />
+                  </div>
+                </PublicRoute>
               } />
               <Route path="/about" element={
-                <div className="min-h-screen flex flex-col">
-                  <Navbar />
-                  <main className="flex-grow">
-                    <About />
-                  </main>
-                  <Footer />
-                </div>
+                <PublicRoute>
+                  <div className="min-h-screen flex flex-col">
+                    <Navbar />
+                    <main className="flex-grow">
+                      <About />
+                    </main>
+                    <Footer />
+                  </div>
+                </PublicRoute>
               } />
               <Route path="/contact" element={
-                <div className="min-h-screen flex flex-col">
-                  <Navbar />
-                  <main className="flex-grow">
-                    <Contact />
-                  </main>
-                  <Footer />
-                </div>
+                <PublicRoute>
+                  <div className="min-h-screen flex flex-col">
+                    <Navbar />
+                    <main className="flex-grow">
+                      <Contact />
+                    </main>
+                    <Footer />
+                  </div>
+                </PublicRoute>
               } />
 
               {/* Admin Routes */}
@@ -140,25 +178,16 @@ function App() {
                 <Route path="dashboard" element={<Dashboard />} />
                 <Route path="products" element={<AdminProducts />} />
                 <Route path="orders" element={<AdminOrders />} />
-                <Route path="customers" element={
-                  <div className="text-center py-20">
-                    <h2 className="text-3xl font-bold text-slate-800 mb-4">Customers Page</h2>
-                    <p className="text-slate-600">Coming soon...</p>
-                  </div>
-                } />
-                <Route path="settings" element={
-                  <div className="text-center py-20">
-                    <h2 className="text-3xl font-bold text-slate-800 mb-4">Settings Page</h2>
-                    <p className="text-slate-600">Coming soon...</p>
-                  </div>
-                } />
+                <Route path="maintenance" element={<MaintenanceSettings />} />
+                <Route path="profile" element={<Profile />} />
               </Route>
             </Routes>
           </OrderProvider>
         </CartProvider>
       </ProductProvider>
-    </AuthProvider>
-  </Router>
+    </MaintenanceProvider>
+  </AuthProvider>
+</Router>
   )
 }
 

@@ -4,15 +4,14 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { 
   LayoutDashboard, 
   Package, 
-  Calendar, 
-  Users, 
-  Settings, 
+  ShoppingBag,
+  Wrench,
+  User,
   LogOut,
   Menu,
   X,
   Crown,
-  ChevronRight,
-  ShoppingBag
+  ChevronRight
 } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 
@@ -43,8 +42,8 @@ const AdminLayout = () => {
     { path: '/admin/dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { path: '/admin/products', label: 'Products', icon: Package },
     { path: '/admin/orders', label: 'Orders', icon: ShoppingBag },
-    { path: '/admin/customers', label: 'Customers', icon: Users },
-    { path: '/admin/settings', label: 'Settings', icon: Settings },
+    { path: '/admin/maintenance', label: 'Maintenance', icon: Wrench },
+    { path: '/admin/profile', label: 'Profile', icon: User },
   ]
 
   const handleLogout = () => {

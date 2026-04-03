@@ -5,8 +5,13 @@ import { Lock, Mail, Crown, Eye, EyeOff } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 
 const Login = () => {
-  const [email, setEmail] = useState('')
+  const [email, setEmail] = useState(() => {
+    return localStorage.getItem('rememberedEmail') || ''
+  })
   const [password, setPassword] = useState('')
+  const [rememberMe, setRememberMe] = useState(() => {
+    return localStorage.getItem('rememberMe') === 'true'
+  })
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
   const { login } = useAuth()
@@ -16,8 +21,16 @@ const Login = () => {
     e.preventDefault()
     setError('')
     
-    const result = login(email, password)
+    const result = login(email, password, rememberMe)
     if (result.success) {
+      // Save email if remember me is checked
+      if (rememberMe) {
+        localStorage.setItem('rememberedEmail', email)
+        localStorage.setItem('rememberMe', 'true')
+      } else {
+        localStorage.removeItem('rememberedEmail')
+        localStorage.removeItem('rememberMe')
+      }
       navigate('/admin/dashboard')
     } else {
       setError(result.error)
@@ -108,6 +121,23 @@ const Login = () => {
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
               </div>
+            </div>
+
+            {/* Remember Me Checkbox */}
+            <div className="flex items-center">
+              <input
+                type="checkbox"
+                id="rememberMe"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+                className="w-4 h-4 text-gold-600 bg-white border-slate-300 rounded focus:ring-gold-500 focus:ring-2 cursor-pointer"
+              />
+              <label
+                htmlFor="rememberMe"
+                className="ml-2 text-sm text-slate-700 cursor-pointer select-none"
+              >
+                Remember me
+              </label>
             </div>
 
             <button
