@@ -279,7 +279,7 @@ export const products = [
     weight: '30g',
     purity: '925 Sterling',
     description: 'Contemporary silver chain necklace with adjustable length. Perfect for layering or wearing solo.',
-    image: 'https://images.unsplash.com/photo-1599458448411-e7e50b9c9a70?w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1611652022419-a9419f74343d?w=800&q=80',
     inStock: true,
     featured: false,
   },
