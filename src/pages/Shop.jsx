@@ -70,132 +70,92 @@ const Shop = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50 to-white pt-24 pb-20">
+    <div className="min-h-screen bg-gradient-to-b from-amber-50 to-white">
+      {/* Hero Section with Image */}
+      <section className="relative h-[300px] md:h-[400px] overflow-hidden">
+        <div className="absolute inset-0">
+          <img
+            src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=1920&q=80"
+            alt="Shop"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60" />
+        </div>
+        <div className="relative h-full flex items-center justify-center text-center px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="max-w-3xl"
+          >
+            <div className="inline-flex items-center space-x-2 bg-gold-500/20 border border-gold-400/50 rounded-full px-4 py-1.5 md:px-6 md:py-2 mb-4 backdrop-blur-sm">
+              <Sparkles className="w-3 h-3 md:w-4 md:h-4 text-gold-300" />
+              <span className="text-gold-200 text-xs md:text-sm font-semibold uppercase tracking-wider">Premium Collection</span>
+            </div>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold mb-4 text-white">
+              Our Collection
+            </h1>
+            <p className="text-slate-200 text-base md:text-xl max-w-2xl mx-auto">
+              Explore our exquisite range of handcrafted gold and silver jewelry
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Background Effects */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-96 h-96 bg-gold-400/10 rounded-full blur-3xl" />
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-orange-400/10 rounded-full blur-3xl" />
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-16"
-          data-aos="fade-up"
-        >
-          <div className="inline-flex items-center space-x-2 bg-gold-500/10 border border-gold-500/30 rounded-full px-6 py-2 mb-6">
-            <Sparkles className="w-4 h-4 text-gold-600" />
-            <span className="text-gold-700 text-sm font-semibold uppercase tracking-wider">Premium Collection</span>
-          </div>
-          <h1 className="text-5xl md:text-7xl font-serif font-bold mb-6">
-            <span className="luxury-text">Our Collection</span>
-          </h1>
-          <p className="text-slate-600 text-xl max-w-2xl mx-auto">
-            Explore our exquisite range of handcrafted gold and silver jewelry
-          </p>
-        </motion.div>
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
 
-        {/* Search Bar */}
+        {/* Combined Search and Filters - Compact */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
           className="mb-8"
-          data-aos="fade-up"
-          data-aos-delay="100"
         >
-          <div className="relative max-w-2xl mx-auto">
-            <Search className="absolute left-6 top-1/2 transform -translate-y-1/2 text-slate-400 w-6 h-6" />
-            <input
-              type="text"
-              placeholder="Search for your perfect piece..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-16 pr-6 py-5 rounded-2xl bg-white border-2 border-slate-200 focus:border-gold-500 text-slate-800 placeholder-slate-400 shadow-lg focus:shadow-xl transition-all outline-none text-lg"
-            />
-            {searchQuery && (
-              <button
-                onClick={() => setSearchQuery('')}
-                className="absolute right-6 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-white transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            )}
-          </div>
-        </motion.div>
-
-        {/* Filter Toggle Button (Mobile) */}
-        <div className="lg:hidden mb-6" data-aos="fade-up" data-aos-delay="200">
-          <button
-            onClick={() => setShowFilters(!showFilters)}
-            className="w-full glass rounded-2xl p-4 flex items-center justify-center space-x-2 text-slate-800 font-semibold hover:bg-white transition-all shadow-lg"
-          >
-            <Filter className="w-5 h-5" />
-            <span>{showFilters ? 'Hide Filters' : 'Show Filters'}</span>
-          </button>
-        </div>
-
-        {/* Filters */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className={`glass rounded-3xl p-8 mb-12 ${showFilters ? 'block' : 'hidden lg:block'}`}
-          data-aos="fade-up"
-          data-aos-delay="200"
-        >
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center space-x-3">
-              <div className="bg-gradient-to-r from-gold-500 to-gold-600 p-2 rounded-lg">
-                <Filter className="w-5 h-5 text-white" />
-              </div>
-              <h2 className="font-bold text-xl text-slate-800">Filters</h2>
-            </div>
-            <button
-              onClick={clearFilters}
-              className="text-slate-600 hover:text-gold-600 text-sm font-semibold transition-colors"
-            >
-              Clear All
-            </button>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Category Filter */}
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-3 uppercase tracking-wider">
-                Category
-              </label>
-              <div className="space-y-2">
-                {categories.map(category => (
-                  <motion.button
-                    key={category.id}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => handleFilterChange(setSelectedCategory)(category.id)}
-                    className={`w-full text-left px-5 py-3 rounded-xl transition-all font-semibold ${
-                      selectedCategory === category.id
-                        ? 'bg-gradient-to-r from-gold-500 to-gold-600 text-white shadow-lg shadow-gold-500/30'
-                        : 'bg-white text-slate-700 hover:bg-slate-50 border-2 border-slate-200'
-                    }`}
+          <div className="bg-white rounded-xl shadow-lg p-4 border-2 border-slate-200">
+            <div className="flex flex-col md:flex-row gap-3">
+              {/* Search */}
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
+                <input
+                  type="text"
+                  placeholder="Search jewelry..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-10 pr-3 py-2 rounded-lg bg-slate-50 border border-slate-200 focus:border-gold-500 text-slate-800 placeholder-slate-400 transition-all outline-none text-sm"
+                />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery('')}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600"
                   >
-                    <span className="mr-2 text-lg">{category.icon}</span>
-                    {category.name}
-                  </motion.button>
-                ))}
+                    <X className="w-4 h-4" />
+                  </button>
+                )}
               </div>
-            </div>
 
-            {/* Type Filter */}
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-3 uppercase tracking-wider">
-                Type
-              </label>
+              {/* Category Filter */}
+              <select
+                value={selectedCategory}
+                onChange={(e) => handleFilterChange(setSelectedCategory)(e.target.value)}
+                className="px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 focus:border-gold-500 text-slate-700 font-medium transition-all outline-none text-sm min-w-[140px]"
+              >
+                {categories.map(category => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+
+              {/* Type Filter */}
               <select
                 value={selectedType}
                 onChange={(e) => handleFilterChange(setSelectedType)(e.target.value)}
-                className="w-full px-5 py-3 rounded-xl bg-white border-2 border-slate-200 text-slate-800 focus:border-gold-500 transition-all outline-none font-semibold"
+                className="px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 focus:border-gold-500 text-slate-700 font-medium transition-all outline-none text-sm min-w-[120px]"
               >
                 {types.map(type => (
                   <option key={type.id} value={type.id}>
@@ -203,24 +163,29 @@ const Shop = () => {
                   </option>
                 ))}
               </select>
-            </div>
 
-            {/* Price Filter */}
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-3 uppercase tracking-wider">
-                Price Range
-              </label>
+              {/* Price Range Filter */}
               <select
                 value={priceRange}
                 onChange={(e) => handleFilterChange(setPriceRange)(e.target.value)}
-                className="w-full px-5 py-3 rounded-xl bg-white border-2 border-slate-200 text-slate-800 focus:border-gold-500 transition-all outline-none font-semibold"
+                className="px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 focus:border-gold-500 text-slate-700 font-medium transition-all outline-none text-sm min-w-[120px]"
               >
                 <option value="all">All Prices</option>
                 <option value="under500">Under $500</option>
-                <option value="500-1000">$500 - $1,000</option>
-                <option value="1000-2000">$1,000 - $2,000</option>
-                <option value="over2000">Over $2,000</option>
+                <option value="500-1000">$500 - $1000</option>
+                <option value="1000-2000">$1000 - $2000</option>
+                <option value="over2000">Over $2000</option>
               </select>
+
+              {/* Clear Filters Button */}
+              {(selectedCategory !== 'all' || selectedType !== 'all' || priceRange !== 'all' || searchQuery) && (
+                <button
+                  onClick={clearFilters}
+                  className="px-4 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium transition-all text-sm whitespace-nowrap"
+                >
+                  Clear
+                </button>
+              )}
             </div>
           </div>
         </motion.div>
@@ -239,7 +204,7 @@ const Shop = () => {
         {/* Products Grid */}
         {currentProducts.length > 0 ? (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
               {currentProducts.map((product, index) => (
                 <div
                   key={product.id}

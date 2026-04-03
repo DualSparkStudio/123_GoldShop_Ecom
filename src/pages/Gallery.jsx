@@ -132,31 +132,44 @@ const Gallery = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50 to-white pt-24 pb-20">
+    <div className="min-h-screen bg-gradient-to-b from-amber-50 to-white">
+      {/* Hero Section with Image */}
+      <section className="relative h-[300px] md:h-[400px] overflow-hidden">
+        <div className="absolute inset-0">
+          <img
+            src="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=1920&q=80"
+            alt="Gallery"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60" />
+        </div>
+        <div className="relative h-full flex items-center justify-center text-center px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="max-w-3xl"
+          >
+            <div className="inline-flex items-center space-x-2 bg-gold-500/20 border border-gold-400/50 rounded-full px-4 py-1.5 md:px-6 md:py-2 mb-4 backdrop-blur-sm">
+              <ImageIcon className="w-3 h-3 md:w-4 md:h-4 text-gold-300" />
+              <span className="text-gold-200 text-xs md:text-sm font-semibold uppercase tracking-wider">Visual Showcase</span>
+            </div>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-bold mb-4 text-white">
+              Gallery
+            </h1>
+            <p className="text-slate-200 text-base md:text-xl max-w-2xl mx-auto">
+              Explore our stunning collection through beautiful imagery
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Background Effects */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-96 h-96 bg-gold-400/10 rounded-full blur-3xl" />
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-orange-400/10 rounded-full blur-3xl" />
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-12"
-        >
-          <div className="inline-flex items-center space-x-2 bg-gold-500/10 border border-gold-500/30 rounded-full px-6 py-2 mb-6">
-            <ImageIcon className="w-4 h-4 text-gold-600" />
-            <span className="text-gold-700 text-sm font-semibold uppercase tracking-wider">Visual Showcase</span>
-          </div>
-          <h1 className="text-5xl md:text-7xl font-serif font-bold mb-6">
-            <span className="luxury-text">Gallery</span>
-          </h1>
-          <p className="text-slate-600 text-xl max-w-2xl mx-auto">
-            Explore our stunning collection through beautiful imagery
-          </p>
-        </motion.div>
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
 
         {/* Category Filter */}
         <motion.div

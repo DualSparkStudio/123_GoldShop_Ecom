@@ -6,6 +6,8 @@ import { OrderProvider } from './context/OrderContext'
 import { MaintenanceProvider, useMaintenanceMode } from './context/MaintenanceContext'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
+import WhatsAppButton from './components/WhatsAppButton'
+import ScrollToTop from './components/ScrollToTop'
 import Home from './pages/Home'
 import Shop from './pages/Shop'
 import Products from './pages/Products'
@@ -54,6 +56,7 @@ function App() {
           <ProductProvider>
             <CartProvider>
               <OrderProvider>
+              <ScrollToTop />
               <Routes>
                 {/* Public Routes */}
                 <Route path="/" element={
@@ -64,6 +67,7 @@ function App() {
                         <Home />
                       </main>
                       <Footer />
+                      <WhatsAppButton />
                     </div>
                   </PublicRoute>
                 } />
@@ -75,6 +79,7 @@ function App() {
                       <Shop />
                     </main>
                     <Footer />
+                    <WhatsAppButton />
                   </div>
                 </PublicRoute>
               } />
@@ -86,6 +91,7 @@ function App() {
                       <Products />
                     </main>
                     <Footer />
+                    <WhatsAppButton />
                   </div>
                 </PublicRoute>
               } />
@@ -97,6 +103,7 @@ function App() {
                       <Gallery />
                     </main>
                     <Footer />
+                    <WhatsAppButton />
                   </div>
                 </PublicRoute>
               } />
@@ -108,6 +115,7 @@ function App() {
                       <ProductDetail />
                     </main>
                     <Footer />
+                    <WhatsAppButton />
                   </div>
                 </PublicRoute>
               } />
@@ -119,6 +127,7 @@ function App() {
                       <Cart />
                     </main>
                     <Footer />
+                    <WhatsAppButton />
                   </div>
                 </PublicRoute>
               } />
@@ -130,6 +139,7 @@ function App() {
                       <Checkout />
                     </main>
                     <Footer />
+                    <WhatsAppButton />
                   </div>
                 </PublicRoute>
               } />
@@ -141,6 +151,7 @@ function App() {
                       <Orders />
                     </main>
                     <Footer />
+                    <WhatsAppButton />
                   </div>
                 </PublicRoute>
               } />
@@ -152,6 +163,7 @@ function App() {
                       <About />
                     </main>
                     <Footer />
+                    <WhatsAppButton />
                   </div>
                 </PublicRoute>
               } />
@@ -163,6 +175,7 @@ function App() {
                       <Contact />
                     </main>
                     <Footer />
+                    <WhatsAppButton />
                   </div>
                 </PublicRoute>
               } />

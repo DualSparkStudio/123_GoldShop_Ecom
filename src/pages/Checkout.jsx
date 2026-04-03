@@ -227,7 +227,7 @@ const Checkout = () => {
 
   if (cart.length === 0) {
     return (
-      <div className="min-h-screen bg-slate-50 py-20">
+      <div className="min-h-screen bg-slate-50 pt-24 pb-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <ShoppingBag className="w-20 h-20 text-slate-300 mx-auto mb-4" />
@@ -246,35 +246,8 @@ const Checkout = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 py-12">
+    <div className="min-h-screen bg-slate-50 pt-24 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Razorpay Key Warning */}
-        <div className="mb-6 bg-blue-50 border-2 border-blue-300 rounded-xl p-4">
-          <div className="flex items-start space-x-3">
-            <div className="flex-shrink-0">
-              <svg className="w-6 h-6 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-              </svg>
-            </div>
-            <div className="flex-1">
-              <h3 className="text-sm font-bold text-blue-900 mb-1">
-                {testMode ? '🧪 Test Mode Active' : '⚠️ Razorpay Configuration Required'}
-              </h3>
-              {testMode ? (
-                <p className="text-sm text-blue-800">
-                  Payments are currently in test mode. Orders will be created without real payment processing. 
-                  To enable real payments, set <code className="bg-blue-100 px-2 py-0.5 rounded font-mono text-xs">testMode = false</code> and add your Razorpay Key ID in <code className="bg-blue-100 px-2 py-0.5 rounded font-mono text-xs">src/pages/Checkout.jsx</code>.
-                </p>
-              ) : (
-                <p className="text-sm text-blue-800">
-                  Replace <code className="bg-blue-100 px-2 py-0.5 rounded font-mono text-xs">rzp_test_YOUR_KEY_ID</code> with your actual Razorpay Key ID in <code className="bg-blue-100 px-2 py-0.5 rounded font-mono text-xs">src/pages/Checkout.jsx</code> (line 60).
-                  Get your key from <a href="https://dashboard.razorpay.com/app/keys" target="_blank" rel="noopener noreferrer" className="underline font-semibold hover:text-blue-600">Razorpay Dashboard</a>.
-                </p>
-              )}
-            </div>
-          </div>
-        </div>
-
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -433,33 +406,6 @@ const Checkout = () => {
                   className="w-full px-4 py-3 rounded-lg border-2 border-slate-200 focus:border-gold-500 outline-none transition-all"
                   placeholder="Any special instructions or notes..."
                 />
-              </div>
-
-              {/* Payment Info Box */}
-              <div className="card p-6 bg-gradient-to-r from-gold-50 to-orange-50 border-2 border-gold-200">
-                <div className="flex items-start space-x-3">
-                  <Lock className="w-6 h-6 text-gold-600 flex-shrink-0 mt-1" />
-                  <div>
-                    <h3 className="font-bold text-slate-800 mb-2">Secure Payment with Razorpay</h3>
-                    <p className="text-sm text-slate-600 mb-3">
-                      Your payment information is encrypted and secure. We accept UPI, Cards, Net Banking, and Wallets.
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      <span className="px-3 py-1 bg-white rounded-full text-xs font-semibold text-slate-700 border border-slate-200">
-                        💳 Credit/Debit Cards
-                      </span>
-                      <span className="px-3 py-1 bg-white rounded-full text-xs font-semibold text-slate-700 border border-slate-200">
-                        📱 UPI
-                      </span>
-                      <span className="px-3 py-1 bg-white rounded-full text-xs font-semibold text-slate-700 border border-slate-200">
-                        🏦 Net Banking
-                      </span>
-                      <span className="px-3 py-1 bg-white rounded-full text-xs font-semibold text-slate-700 border border-slate-200">
-                        👛 Wallets
-                      </span>
-                    </div>
-                  </div>
-                </div>
               </div>
 
               <button

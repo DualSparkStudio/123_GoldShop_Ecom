@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { ShoppingCart, ArrowLeft, Check, Star } from 'lucide-react'
@@ -12,6 +12,10 @@ const ProductDetail = () => {
   const product = products.find(p => p.id === id)
   const { addToCart } = useCart()
   const [quantity, setQuantity] = useState(1)
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [id])
 
   if (!product) {
     return (
@@ -43,7 +47,7 @@ const ProductDetail = () => {
   ]
 
   return (
-    <div className="min-h-screen bg-slate-50 py-12">
+    <div className="min-h-screen bg-slate-50 pt-24 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Back Button */}
         <Link

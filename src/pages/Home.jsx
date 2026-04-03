@@ -83,7 +83,7 @@ const Home = () => {
   return (
     <div className="bg-white">
       {/* Hero Carousel */}
-      <section className="relative h-[500px] md:h-[600px] lg:h-[700px]">
+      <section className="relative h-screen">
         <Swiper
           modules={[Autoplay, Pagination, Navigation, EffectFade]}
           effect="fade"
@@ -160,13 +160,21 @@ const Home = () => {
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="inline-flex items-center space-x-2 bg-gold-100 border border-gold-300 rounded-full px-4 py-2 mb-4"
+            >
+              <span className="text-gold-700 text-sm font-semibold uppercase tracking-wider">Collections</span>
+            </motion.div>
             <h2 className="text-3xl md:text-4xl font-serif font-bold mb-3 text-slate-900">
               Shop by Category
             </h2>
             <p className="text-slate-600">Explore our exclusive jewelry collections</p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
             {categories.map((category, index) => (
               <Link
                 key={index}
@@ -175,17 +183,41 @@ const Home = () => {
                 data-aos="fade-up"
                 data-aos-delay={index * 50}
               >
-                <div className="relative overflow-hidden rounded-lg aspect-square mb-3">
-                  <img
-                    src={category.image}
-                    alt={category.name}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors" />
-                </div>
-                <h3 className="text-center font-semibold text-slate-900 group-hover:text-gold-600 transition-colors">
-                  {category.name}
-                </h3>
+                <motion.div
+                  whileHover={{ y: -8 }}
+                  transition={{ duration: 0.3 }}
+                  className="relative"
+                >
+                  {/* Card Container */}
+                  <div className="relative overflow-hidden rounded-2xl aspect-square shadow-lg group-hover:shadow-2xl transition-all duration-300">
+                    {/* Image */}
+                    <img
+                      src={category.image}
+                      alt={category.name}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                    
+                    {/* Gradient Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
+                    
+                    {/* Decorative Corner */}
+                    <div className="absolute top-3 right-3 w-8 h-8 border-t-2 border-r-2 border-gold-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute bottom-3 left-3 w-8 h-8 border-b-2 border-l-2 border-gold-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    
+                    {/* Content */}
+                    <div className="absolute inset-0 flex flex-col items-center justify-end p-4">
+                      <h3 className="text-white font-bold text-sm md:text-base text-center mb-2 transform group-hover:translate-y-0 translate-y-2 transition-transform duration-300">
+                        {category.name}
+                      </h3>
+                      <div className="w-0 group-hover:w-12 h-0.5 bg-gold-400 transition-all duration-300" />
+                    </div>
+
+                    {/* Shine Effect */}
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent transform -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
+                    </div>
+                  </div>
+                </motion.div>
               </Link>
             ))}
           </div>
@@ -211,7 +243,7 @@ const Home = () => {
             </Link>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
             {featuredProducts.map((product, index) => (
               <div key={product.id} data-aos="fade-up" data-aos-delay={index * 50}>
                 <ProductCard product={product} />
@@ -232,7 +264,7 @@ const Home = () => {
       </section>
 
       {/* Gold Collection */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-8">
             <div>
@@ -250,7 +282,7 @@ const Home = () => {
             </Link>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
             {goldProducts.map((product, index) => (
               <div key={product.id} data-aos="fade-up" data-aos-delay={index * 50}>
                 <ProductCard product={product} />
@@ -261,7 +293,7 @@ const Home = () => {
       </section>
 
       {/* Silver Collection */}
-      <section className="py-16 bg-slate-50">
+      <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-8">
             <div>
@@ -279,7 +311,7 @@ const Home = () => {
             </Link>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
             {silverProducts.map((product, index) => (
               <div key={product.id} data-aos="fade-up" data-aos-delay={index * 50}>
                 <ProductCard product={product} />
@@ -290,7 +322,7 @@ const Home = () => {
       </section>
 
       {/* Why Choose Us */}
-      <section className="py-16 bg-white border-t">
+      <section className="py-16 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-serif font-bold mb-3 text-slate-900">
